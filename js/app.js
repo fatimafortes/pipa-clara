@@ -58,14 +58,44 @@ const current = () => state?.deliveries.find((d) => d.id === state.currentId) ||
 
 function ensureSplit(d) {
   const n = state.settings.households.length;
-  if (!d.split || d.split.payments.length !== n) {
+  if (!d.split) {
     d.split = {
       mode: 'equal',
       shares: equalShares(d.price, n),
       payments: Array.from({ length: n }, () => ({ status: 'pendiente', note: '' })),
     };
+  } else if (d.split.payments.length !== n) {
+    // Households were added or removed after this pipa: keep the payments
+    // already logged (by position) instead of wiping them.
+    const old = d.split.payments;
+    d.split.payments = Array.from({ length: n }, (_, i) => old[i] || { status: 'pendiente', note: '' });
+    d.split.mode = 'equal';
+    d.split.shares = equalShares(d.price, n);
+    flash.reparto = 'Cambió el número de hogares: el reparto volvió a partes iguales. Los pagos ya anotados se conservaron.';
   }
   return d.split;
+}
+
+function summaryFor(d) {
+  const split = ensureSplit(d);
+  const n = state.settings.households.length;
+  return buildSummary({
+    date: fmtDate(d.date), quoted: d.quoted, result: d.result, price: d.price, households: n,
+    payments: split.payments, sharesEqual: split.mode === 'equal', perHousehold: d.price / n,
+  });
+}
+
+// Update counters and the shared text in place, so nothing typed in the form is lost.
+function refreshSplitInfo(d) {
+  const split = ensureSplit(d);
+  const n = state.settings.households.length;
+  const count = document.getElementById('count');
+  if (count) count.textContent = `${countRegistered(split.payments)} de ${n}`;
+  const text = summaryFor(d);
+  const pre = document.getElementById('summary');
+  if (pre) pre.textContent = text;
+  const wa = document.getElementById('wa');
+  if (wa) wa.href = `https://wa.me/?text=${encodeURIComponent(text)}`;
 }
 
 // ---------- chart ----------
@@ -183,10 +213,7 @@ function renderReparto() {
   const n = s.households.length;
   const registered = countRegistered(split.payments);
   const cost = totalCost({ price: d.price, households: n, equipmentCost: s.equipmentCost, deliveriesPerYear: s.deliveriesPerYear, coordMinutes: s.coordMinutes, hourValue: s.hourValue });
-  const summary = buildSummary({
-    date: fmtDate(d.date), quoted: d.quoted, result: d.result, price: d.price, households: n,
-    payments: split.payments, sharesEqual: split.mode === 'equal', perHousehold: d.price / n,
-  });
+  const summary = summaryFor(d);
 
   const rows = s.households.map((name, i) => {
     const p = split.payments[i];
@@ -218,7 +245,7 @@ function renderReparto() {
         ${split.mode === 'custom' ? '<button class="btn secondary" type="submit">Guardar aportaciones</button>' : ''}
         <div class="err" role="alert">${esc(flash.reparto)}</div>
       </form>
-      <p class="small">Aportaciones registradas: <b>${registered} de ${n}</b>. Aquí nunca se muestra una lista de quién debe.</p>
+      <p class="small">Aportaciones registradas: <b id="count">${registered} de ${n}</b>. Aquí nunca se muestra una lista de quién debe.</p>
     </section>
 
     <section class="card">
@@ -469,7 +496,7 @@ view.addEventListener('change', (e) => {
   if (el.dataset.action === 'status' && STATUSES[el.value]) {
     split.payments[i].status = el.value;
     persist();
-    render();
+    refreshSplitInfo(d);
   }
   if (el.dataset.action === 'note') {
     split.payments[i].note = cleanText(el.value, 120);
