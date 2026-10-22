@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pipa Clara · Pruebas</title>
+  <style>
+    body { font: 16px/1.5 system-ui, sans-serif; margin: 0 auto; max-width: 720px; padding: 16px; background: #f4f8fa; color: #12304a; }
+    li { margin: 4px 0; }
+    .ok { color: #1d7a46; } .fail { color: #a3261d; font-weight: 700; }
+    #total { font-weight: 800; font-size: 20px; }
+  </style>
+</head>
+<body>
+  <h1>Pipa Clara · Pruebas automáticas</h1>
+  <p>Pruebas de las funciones puras: calibración, sensor simulado, ML, audit gate, reparto y resumen.</p>
+  <p id="total">Corriendo…</p>
+  <ol id="out"></ol>
+  <script type="module" src="js/tests.js"></script>
+</body>
+</html>
