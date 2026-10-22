@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pipa Clara</title>
+  <meta name="description" content="Verifica cuánta agua entró a tu cisterna compartida y reparte el costo de la pipa entre vecinos. Tus datos se quedan en tu teléfono.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 3C16 3 6 15 6 21a10 10 0 0 0 20 0C26 15 16 3 16 3z' fill='%2314a3b8'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3C16 3 6 15 6 21a10 10 0 0 0 20 0C26 15 16 3 16 3z"/></svg>
+      <span>Pipa Clara</span>
+    </div>
+    <span class="badge sim" title="Las lecturas del sensor son simuladas para esta demostración">SENSOR SIMULADO</span>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button role="tab" data-tab="entrega" aria-selected="true">1 · Pipa</button>
+    <button role="tab" data-tab="reparto">2 · Reparto</button>
+    <button role="tab" data-tab="ajustes">Ajustes</button>
+  </nav>
+
+  <div id="notice" class="notice" hidden></div>
+  <main id="view"></main>
+
+  <footer class="foot">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10V7a5 5 0 0 1 10 0v3h1a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1h1zm2 0h6V7a3 3 0 0 0-6 0v3z"/></svg>
+    Tus datos viven en este teléfono
+  </footer>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
