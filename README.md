@@ -11,7 +11,7 @@ Week 11 · Business Bending · *When Scarcity Ends — And What We Lose Anyway* 
 ## What it does
 1. **Sensing (SIMULATED, labeled):** a cistern level sensor feed (14 days of history + per-minute readings during the unloading).
 2. **ML (advisory, labeled):** ridge regression predicts the building's consumption by hour, evaluated against a simple-average baseline on a 2-day hold-out; the better one is used.
-3. **Audit gate:** shows **quoted**, **observed** and **estimated** liters separately. Verdict is only *Consistente*, *Revisar con {encargada}* or *Datos insuficientes*. Never "fraud".
+3. **Audit gate:** shows **quoted**, **observed** and **estimated** liters separately. Verdict is only *Consistente*, *Diferencia por revisar* (naming who reviews it) or *Datos insuficientes*. Never "fraud".
 4. **Marketplace logic:** cost-split ledger (equal or agreed shares; cash or transfer; private notes). Logs money, never holds it.
 5. **Approved sharing:** by default the WhatsApp message carries only the cost per household; liters and the payment count are opt-in; nothing is sent until the user checks "Ya leí el mensaje".
 
