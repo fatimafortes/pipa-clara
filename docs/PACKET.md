@@ -3,6 +3,7 @@
 > Business Bending · *When Scarcity Ends — And What We Lose Anyway* · Chapter 10, *Dreaming of Plenitude*
 > Team Blueprint primary vacuum: **HOUSEHOLD WATER TOOLS — Pipa entre vecinos**
 > My declaration: *challenge confirmation, access and data control; define audit gates* (Conditions 1, 3, 4)
+> Live URL: https://fatimafortes.github.io/pipa-clara/ · Repo: https://github.com/fatimafortes/pipa-clara
 
 ---
 
@@ -43,6 +44,8 @@ Secondary users: the other 4 households, who only see the summary she chooses to
 
 ## 5. The flow
 
+<div style="page-break-before:always"></div>
+
 ### 5a. Flowchart — how one delivery is verified
 
 ```mermaid
@@ -71,40 +74,37 @@ flowchart TD
     R -- No --> T[Nothing leaves the phone]
 ```
 
+<div style="page-break-before:always"></div>
+
 ### 5b. Swimlane — who does what
 
+Each vertical lane is one actor; read top to bottom.
+
 ```mermaid
-flowchart LR
-    subgraph P[Pipero]
-        P1[Quotes liters and price]
-        P2[Unloads water]
+sequenceDiagram
+    participant P as Pipero
+    participant L as Lupita (encargada)
+    participant S as Sensor (SIMULATED)
+    participant AI as ML model (advisory)
+    participant A as App logic
+    participant N as Neighbors (4 households)
+    P->>L: Quotes 10,000 L for $1,800
+    L->>A: Records quote, price, households
+    A->>S: Reads level BEFORE
+    P->>S: Unloads water (level rises every minute)
+    S->>A: Level AFTER + duration
+    A->>A: OBSERVED = level change x L per cm
+    A->>AI: History + unloading window
+    AI-->>A: Neighbors' consumption ± range (checked vs. baseline)
+    A->>A: Audit gate: Consistente / Revisar / Datos insuficientes
+    A-->>L: Three numbers + verdict (never "fraud")
+    opt Verdict = Revisar
+        L->>P: Talks it through before the next pipa
     end
-    subgraph L[Lupita · encargada]
-        L1[Records quote in app]
-        L2[Starts / ends unloading]
-        L3[Reads verdict;<br/>talks to pipero if REVISAR]
-        L4[Approves summary to share]
-    end
-    subgraph S[Sensor · SIMULATED]
-        S1[Level every minute]
-    end
-    subgraph AI[ML model · advisory]
-        A1[Estimates concurrent consumption<br/>vs. simple baseline]
-    end
-    subgraph SYS[App logic]
-        Y1[Computes observed liters]
-        Y2[Audit gate verdict]
-        Y3[Cost split + payment log]
-    end
-    subgraph N[Neighbors · 4 households]
-        N1[Pay cash or transfer]
-        N2[Receive approved summary]
-    end
-    P1 --> L1 --> L2
-    P2 --> S1 --> Y1 --> A1 --> Y2 --> L3
-    L2 --> S1
-    Y2 --> Y3
-    N1 --> Y3 --> L4 --> N2
+    N->>L: Pay in cash or by transfer
+    L->>A: Logs each payment privately
+    A-->>L: Summary preview (counts only, no names)
+    L->>N: Shares on WhatsApp only after approving
 ```
 
 ## 6. Benchmark line
