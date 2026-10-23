@@ -13,3 +13,16 @@
 8. **GitHub Pages** instead of Vercel: no env vars needed, free, one less account for the demo.
 
 **Tomorrow's first move:** run the mechanical test pass on the live URL (blocked storage, XSS in names, changing households after a delivery, agreed shares), fix the first real bug, redeploy.
+
+## Session 2 · Thu Oct 22, 2026 (evening)
+
+**What happened:** deployed to GitHub Pages (deploy 1), fixed 2 mechanical bugs (deploy 2), then ran the persona test with a synthetic "Doña Lupita" (see `PERSONA.md`).
+
+**Decisions**
+1. **The shared message carries only the cost by default.** The persona showed that sending liters + "Revisar con Lupita" + "2 de 5" to the group exposes the pipero and the neighbors, the exact harm of the Shadow Clause. Liters and the payment count are now opt-in, and changing them forces a re-read before sending.
+2. **The verdict never names a person in its title.** "Diferencia por revisar" plus "Quién lo revisa: {name}" still honors Condition 4 (a named person handles discrepancies) without reading as an accusation on her own phone.
+3. **No pre-filled cistern measurements.** A plausible default is worse than an empty field: the user accepts it and every liter is computed from an invented cistern. Until real measurements exist, liters show "—" and the gate says *Datos insuficientes*; the cost split still works.
+4. **Register first, settings later.** The main path is now "Registrar mi pipa"; measurements and advanced options are optional and collapsed.
+5. Kept the "SENSOR SIMULADO" label despite the persona's distrust, because Condition 6 requires it.
+
+**Tomorrow's first move:** record the demo video on the live URL (private window), export PERSONA and BUILDCHAT PDFs, and show the URL to one real encargada if the User teammate can arrange it.

@@ -32,5 +32,5 @@
 
 *After the fix:* the mechanical script rerun passes all checks, and all 19 unit tests pass. → committed as `fix:` and redeployed (deploy 2).
 
-## Persona pass
-See `PERSONA` log (to be added after the synthetic-user test).
+## Persona pass · Oct 22, 2026
+Synthetic user "Doña Lupita" walked 5 screens. Worst confusion: the WhatsApp summary broadcast the liters gap and "Revisar con Lupita" to the group. Fixed (cost-only message by default, opt-in details, neutral verdict, no pre-filled measurements) and redeployed (deploy 3). Full log in `PERSONA.md`. Unit tests after the fix: 20/20.

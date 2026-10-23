@@ -21,8 +21,8 @@ export function decide({ quoted, estimated, range, calibrated, modelOk, coordina
       code: 'insuficiente',
       title: 'Datos insuficientes',
       text: !calibrated
-        ? 'Falta calibrar la cisterna. Sin calibración no emitimos ningún juicio.'
-        : 'El sensor tiene menos de 3 días de historial. No emitimos ningún juicio todavía.',
+        ? 'Todavía no tienes las medidas de tu cisterna. Sin ellas no damos un resultado sobre los litros. El reparto del costo sí funciona.'
+        : 'El sensor tiene menos de 3 días de historial. Todavía no damos un resultado sobre los litros.',
     };
   }
   const tol = quoted * TOLERANCE;
@@ -37,8 +37,8 @@ export function decide({ quoted, estimated, range, calibrated, modelOk, coordina
   const gap = Math.round((quoted - upper) / 10) * 10;
   return {
     code: 'revisar',
-    title: `Revisar con ${coordinator}`,
-    text: `Según el sensor, entraron al menos ${gap.toLocaleString('es-MX')} L menos de lo cotizado, ya contando el margen. Esto no prueba nada por sí solo: puede ser la manguera, la calibración o el agua que usaron los vecinos. ${coordinator} puede revisarlo con el pipero antes de la próxima entrega.`,
+    title: 'Diferencia por revisar',
+    text: `El sensor midió unos ${gap.toLocaleString('es-MX')} L menos de lo que dijo el pipero, ya contando el margen. No es prueba de nada: puede ser la manguera, la medida de la cisterna o el agua que se usó en el edificio durante la descarga. Esto solo lo ves tú. Quién lo revisa: ${coordinator}, si y cuando le parezca.`,
     gap,
   };
 }

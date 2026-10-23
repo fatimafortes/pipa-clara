@@ -43,7 +43,10 @@ test('Gate: 2 días de historial → Datos insuficientes', () => run('completa',
 test('Gate: sensor ruidoso → rango más amplio', () => run('ruidosa', 14).range > 2 * run('completa', 14).range);
 test('Gate: sin calibración → Datos insuficientes', () =>
   decide({ quoted: 10000, estimated: 9000, range: 100, calibrated: false, modelOk: true, coordinator: 'X' }).code === 'insuficiente');
-test('Gate: el veredicto de revisión nombra a la encargada', () => run('corta', 14).verdict.title === 'Revisar con Lupita');
+test('Gate: el veredicto de revisión nombra a quien lo revisa, sin señalarla en el título', () => {
+  const v = run('corta', 14).verdict;
+  return v.title === 'Diferencia por revisar' && v.text.includes('Quién lo revisa: Lupita');
+});
 test('Gate: nunca usa la palabra "fraude" ni "robo"', () =>
   ['completa', 'corta', 'ruidosa'].every((s) => !/fraude|robo/i.test(JSON.stringify(run(s, 14).verdict))));
 test('Reparto: $1,800 entre 5 = $360 cada uno', () => equalShares(1800, 5).every((x) => x === 360));
@@ -52,14 +55,18 @@ test('Reparto: partes acordadas que no suman el total → error', () => validate
 test('Reparto: partes acordadas que sí suman → sin error', () => validateShares([600, 600, 600], 1800) === null);
 test('Reparto: cuenta solo las aportaciones registradas', () =>
   countRegistered([{ status: 'efectivo' }, { status: 'pendiente' }, { status: 'transferencia' }]) === 2);
-test('Resumen: no incluye nombres de hogares ni lecturas del sensor', () => {
-  const r = run('corta', 14);
-  const text = buildSummary({
-    date: '22 oct 2026', quoted: 10000, result: r, price: 1800, households: 5,
-    payments: [{ status: 'efectivo' }, { status: 'pendiente' }, { status: 'pendiente' }, { status: 'pendiente' }, { status: 'pendiente' }],
-    sharesEqual: true, perHousehold: 360,
-  });
-  return !/Hogar|Depto|cm\b/.test(text) && text.includes('1 de 5');
+const summaryArgs = (extra) => ({
+  date: '22 oct 2026', quoted: 10000, result: run('corta', 14), price: 1800, households: 5,
+  payments: [{ status: 'efectivo' }, { status: 'pendiente' }, { status: 'pendiente' }, { status: 'pendiente' }, { status: 'pendiente' }],
+  sharesEqual: true, perHousehold: 360, ...extra,
+});
+test('Resumen por defecto: solo el costo (sin litros, sin veredicto, sin conteo, sin nombres)', () => {
+  const text = buildSummary(summaryArgs({}));
+  return text.includes('$360') && !/\d L\b/.test(text) && !/revisar|sensor|de 5/i.test(text) && !/Hogar \d/.test(text);
+});
+test('Resumen: litros y conteo solo si el usuario los agrega', () => {
+  const text = buildSummary(summaryArgs({ includeLiters: true, includeCount: true }));
+  return text.includes('1 de 5') && text.includes('10,000 L') && !/revisar|\bcm\b/i.test(text) && !/Hogar \d/.test(text);
 });
 
 if (typeof document !== 'undefined') {

@@ -38,18 +38,22 @@ const fmtL = (n) => `${Math.round(n).toLocaleString('es-MX')} L`;
 const fmt$ = (n) => `$${(Math.round(n * 100) / 100).toLocaleString('es-MX')}`;
 
 // The ONLY text that ever leaves the phone. No names, no raw readings.
-export function buildSummary({ date, quoted, result, price, households, payments, sharesEqual, perHousehold }) {
+// By default it carries only the cost. Liters and the payment count are opt-in
+// (persona test: sharing them by default exposed the pipero and the neighbors).
+export function buildSummary({ date, quoted, result, price, households, payments, sharesEqual, perHousehold, includeLiters = false, includeCount = false }) {
   const lines = [
-    `💧 Pipa Clara · resumen de la pipa del ${date}`,
-    `Cotizado: ${fmtL(quoted)}`,
-    `Observado: ${fmtL(result.observed)}`,
-    `Estimado: ${fmtL(result.estimated)} ± ${fmtL(result.range)}`,
-    `Resultado: ${result.verdict.title}`,
+    `💧 Ya llegó la pipa (${date})`,
     sharesEqual
-      ? `Costo: ${fmt$(price)} → ${fmt$(perHousehold)} por hogar (${households} hogares)`
-      : `Costo: ${fmt$(price)} entre ${households} hogares (aportaciones acordadas)`,
-    `Aportaciones registradas: ${countRegistered(payments)} de ${households}`,
-    `(Sensor simulado · estimación orientativa)`,
+      ? `Costó ${fmt$(price)} entre ${households} hogares: toca ${fmt$(perHousehold)} por hogar.`
+      : `Costó ${fmt$(price)} entre ${households} hogares, con las aportaciones que acordamos.`,
   ];
+  if (includeCount) lines.push(`Aportaciones anotadas: ${countRegistered(payments)} de ${households}.`);
+  if (includeLiters && result.verdict.code !== 'insuficiente') {
+    lines.push(
+      `Litros: el pipero dijo ${fmtL(quoted)}; el sensor midió ${fmtL(result.observed)} (estimado ${fmtL(result.estimated)} ± ${fmtL(result.range)}).`,
+      `(Medición orientativa con sensor simulado)`,
+    );
+  }
+  lines.push('Gracias 🙏');
   return lines.join('\n');
 }

@@ -30,7 +30,7 @@ body {
   flex-direction: column;
 }
 .top { display: flex; align-items: center; justify-content: space-between; padding: 16px 16px 8px; gap: 8px; }
-.brand { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 26px; color: var(--blue); }
+.brand { white-space: nowrap; display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 26px; color: var(--blue); }
 .brand svg { width: 30px; height: 30px; fill: var(--teal); }
 .badge { font-size: 12px; font-weight: 700; letter-spacing: .03em; padding: 5px 10px; border-radius: 999px; white-space: nowrap; }
 .badge.sim { color: var(--amber); background: var(--amber-bg); border: 1px solid #f3cf86; }
