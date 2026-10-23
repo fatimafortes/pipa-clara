@@ -26,3 +26,5 @@
 5. Kept the "SENSOR SIMULADO" label despite the persona's distrust, because Condition 6 requires it.
 
 **Tomorrow's first move:** record the demo video on the live URL (private window), export PERSONA and BUILDCHAT PDFs, and show the URL to one real encargada if the User teammate can arrange it.
+
+**Addendum (Oct 22, night):** moved production hosting to **Vercel** (https://pipa-clara.vercel.app/), connected to `main`, so every push redeploys automatically. GitHub Pages stays as a mirror. Still no environment variables needed: the app has no secrets. Decision 8 from Session 1 is superseded.

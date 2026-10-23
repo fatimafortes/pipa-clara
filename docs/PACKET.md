@@ -3,7 +3,7 @@
 > Business Bending · *When Scarcity Ends — And What We Lose Anyway* · Chapter 10, *Dreaming of Plenitude*
 > Team Blueprint primary vacuum: **HOUSEHOLD WATER TOOLS — Pipa entre vecinos**
 > My declaration: *challenge confirmation, access and data control; define audit gates* (Conditions 1, 3, 4)
-> Live URL: https://fatimafortes.github.io/pipa-clara/ · Repo: https://github.com/fatimafortes/pipa-clara
+> Live URL: https://pipa-clara.vercel.app/ · Repo: https://github.com/fatimafortes/pipa-clara
 
 ---
 

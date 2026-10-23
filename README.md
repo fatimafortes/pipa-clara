@@ -4,7 +4,7 @@
 
 Week 11 · Business Bending · *When Scarcity Ends — And What We Lose Anyway* · Fátima Fortes Ortega
 
-- **Live app: https://fatimafortes.github.io/pipa-clara/**
+- **Live app: https://pipa-clara.vercel.app/** (mirror: https://fatimafortes.github.io/pipa-clara/)
 - Tests: https://fatimafortes.github.io/pipa-clara/tests.html (or `node js/tests.js`)
 - Packet: [`docs/PACKET.md`](docs/PACKET.md) · Build prompt: [`docs/IMPLEMENTATION_PROMPT.md`](docs/IMPLEMENTATION_PROMPT.md) · Decisions: [`docs/DECISIONS.md`](docs/DECISIONS.md)
 
